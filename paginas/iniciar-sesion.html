@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iniciar sesión · Campus Virtual GLOCAP CENTER</title>
+<meta name="description" content="Inicia sesión en el Campus Virtual de GLOCAP CENTER.">
+<link rel="icon" href="../imagenes/logo-glocap.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/principal.css">
+<link rel="stylesheet" href="../css/componentes.css">
+<link rel="stylesheet" href="../css/responsivo.css">
+</head>
+<body>
+
+<a href="../index.html" class="volver-inicio-login">
+  <span class="ic ic-sm ic-flecha-derecha" style="transform:rotate(180deg);"></span>
+  Volver al sitio
+</a>
+
+<main class="pagina-login">
+  <div class="contenedor" style="width:100%;">
+    <div class="tarjeta-login" data-revelar>
+      <div class="marca-login">
+        <img src="../imagenes/logo-glocap.png" alt="GLOCAP CENTER">
+      </div>
+      <h1>Campus Virtual</h1>
+      <p class="subtexto">Ingresa con tu cuenta de estudiante o instructor.</p>
+
+      <form aria-label="Formulario de inicio de sesión">
+        <div class="campo">
+          <label for="correo-login">Correo electrónico</label>
+          <input type="email" id="correo-login" name="correo" required>
+        </div>
+        <div class="campo" style="margin-top:16px;">
+          <label for="clave-login">Contraseña</label>
+          <input type="password" id="clave-login" name="clave" required>
+        </div>
+        <div class="fila-login-extra">
+          <label style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--texto-secundario);">
+            <input type="checkbox" style="width:auto;"> Recordarme
+          </label>
+          <a href="#">¿Olvidaste tu contraseña?</a>
+        </div>
+        <button type="submit" class="boton boton-primario">Iniciar sesión</button>
+      </form>
+
+      <div class="separador-login">Campus Virtual</div>
+      <p class="subtexto" style="margin-bottom:0;">¿Aún no tienes cuenta? <a href="../paginas/contacto.html" style="color:var(--rojo-vivo);">Contáctanos para inscribirte</a>.</p>
+    </div>
+  </div>
+</main>
+
+<script src="../javascript/principal.js"></script>
+</body>
+</html>

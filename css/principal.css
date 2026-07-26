@@ -1,0 +1,172 @@
+/* =====================================================
+   GLOCAP CENTER — principal.css
+   Variables de marca, reset y fundamentos tipográficos
+   ===================================================== */
+
+:root{
+  /* ---- Color ---- */
+  --negro:            #15171B;   /* fondo oscuro institucional */
+  --carbon:            #21242B;   /* superficie oscura secundaria */
+  --rojo:              #9C1B1B;   /* rojo institucional (marca) */
+  --rojo-vivo:         #C4281F;   /* rojo de acción / CTA */
+  --rojo-tinta:        #6E1414;   /* rojo profundo para hover/sombras */
+  --blanco:            #FDFBF8;   /* blanco cálido, no puro */
+  --hueso:             #F1ECE4;   /* fondo alterno claro */
+  --hueso-oscuro:      #E4DDD1;
+  --oro:               #AD8A50;   /* acento de certificación, uso mínimo */
+  --texto:             #1C1D20;
+  --texto-secundario:  #5B5F66;
+  --texto-invertido:   #F4F1EC;
+  --linea:             rgba(21,23,27,0.12);
+  --linea-clara:       rgba(253,251,248,0.18);
+
+  /* ---- Tipografía ---- */
+  --f-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --f-cuerpo:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --f-mono:    'IBM Plex Mono', 'Courier New', monospace;
+
+  /* ---- Ritmo / espaciado ---- */
+  --radio: 3px;
+  --radio-tarjeta: 6px;
+  --contenedor: 1240px;
+  --sombra-suave: 0 12px 30px rgba(21,17,15,0.10);
+  --sombra-fuerte: 0 18px 45px rgba(21,17,15,0.22);
+
+  --dur: 220ms;
+  --curva: cubic-bezier(.25,.8,.25,1);
+}
+
+*, *::before, *::after{ box-sizing:border-box; }
+
+html{ scroll-behavior:smooth; }
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *, *::before, *::after{
+    animation-duration:0.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:0.01ms !important;
+    scroll-behavior:auto !important;
+  }
+}
+
+body{
+  margin:0;
+  font-family:var(--f-cuerpo);
+  color:var(--texto);
+  background:var(--blanco);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  font-size:16px;
+}
+
+img{ max-width:100%; display:block; }
+
+a{ color:inherit; text-decoration:none; }
+
+ul, ol{ margin:0; padding:0; list-style:none; }
+
+button{ font-family:inherit; cursor:pointer; }
+
+h1,h2,h3,h4{
+  font-family:var(--f-display);
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.01em;
+  line-height:1.05;
+  margin:0;
+  color:var(--negro);
+}
+
+p{ margin:0; }
+
+.contenedor{
+  max-width:var(--contenedor);
+  margin-inline:auto;
+  padding-inline:24px;
+}
+
+.oculto-visualmente{
+  position:absolute;
+  width:1px; height:1px;
+  padding:0; margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0;
+}
+
+/* ---- Foco visible accesible ---- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible{
+  outline:2px solid var(--rojo-vivo);
+  outline-offset:3px;
+  border-radius:2px;
+}
+
+/* ---- Eyebrow / etiqueta de sección ---- */
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-family:var(--f-mono);
+  font-size:12.5px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--rojo-vivo);
+  margin-bottom:14px;
+}
+.eyebrow::before{
+  content:"";
+  width:22px;
+  height:2px;
+  background:var(--rojo-vivo);
+  display:inline-block;
+}
+
+/* ---- Espacio reservado para imágenes que el cliente colocará manualmente ---- */
+.espacio-imagen{
+  background:
+    repeating-linear-gradient(135deg, rgba(21,23,27,0.05) 0 10px, transparent 10px 20px),
+    var(--hueso);
+  border:1.5px dashed var(--linea);
+  border-radius:var(--radio-tarjeta);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:var(--texto-secundario);
+  font-family:var(--f-mono);
+  font-size:12.5px;
+  letter-spacing:0.03em;
+  padding:20px;
+  min-height:220px;
+}
+.espacio-imagen span{ max-width:26ch; }
+.espacio-imagen.oscuro{
+  background:
+    repeating-linear-gradient(135deg, rgba(253,251,248,0.05) 0 10px, transparent 10px 20px),
+    var(--carbon);
+  border-color:var(--linea-clara);
+  color:rgba(244,241,236,0.55);
+}
+
+/* ---- Línea de pulso (elemento de firma visual) ----
+   Motivo recurrente inspirado en el trazo de un monitor de signos
+   vitales: conecta las secciones y refuerza el eje de emergencias
+   médicas / formación clínica del centro. */
+.linea-pulso{
+  width:100%;
+  height:34px;
+  display:block;
+}
+.linea-pulso path{
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
