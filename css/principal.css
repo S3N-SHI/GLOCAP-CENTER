@@ -38,7 +38,7 @@
 
 *, *::before, *::after{ box-sizing:border-box; }
 
-html{ scroll-behavior:smooth; }
+html{ scroll-behavior:smooth; overflow-x:hidden; }
 
 @media (prefers-reduced-motion: reduce){
   html{ scroll-behavior:auto; }
@@ -58,6 +58,7 @@ body{
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
   font-size:16px;
+  overflow-x:hidden;
 }
 
 img{ max-width:100%; display:block; }
