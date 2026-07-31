@@ -1,33 +1,32 @@
 /* =====================================================
    GLOCAP CENTER — responsivo.css
    ===================================================== */
+/* ---- Pantallas grandes (reduce el espacio muerto en monitores anchos) ---- */
+@media (min-width: 1600px) {
+  :root {
+    --contenedor: 1400px;
+  }
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --contenedor: 1600px;
+  }
+}
 
 /* ---- Portátiles / pantallas medianas ---- */
-@media (max-width: 1080px) {
-  .hero .contenedor {
-    grid-template-columns: 1fr;
-  }
 
-  .hero-visual {
-    order: -1;
-  }
 
-  .hero-visual .espacio-imagen {
-    min-height: 0;
-    aspect-ratio: 16/9;
-  }
+.metodologia {
+  grid-template-columns: 1fr;
+}
 
-  .metodologia {
-    grid-template-columns: 1fr;
-  }
+.metodologia .espacio-imagen {
+  min-height: 300px;
+}
 
-  .metodologia .espacio-imagen {
-    min-height: 300px;
-  }
-
-  .pie-rejilla {
-    grid-template-columns: 1fr 1fr;
-  }
+.pie-rejilla {
+  grid-template-columns: 1fr 1fr;
 }
 
 /* ---- Tablet ---- */
@@ -48,6 +47,7 @@
     transition: transform var(--dur) var(--curva);
     box-shadow: var(--sombra-fuerte);
   }
+
 
   .nav-principal.abierto {
     transform: translateX(0);
@@ -100,6 +100,7 @@
     padding-inline: 18px;
   }
 
+ 
   .hero {
     padding: 140px 0 64px;
   }

@@ -154,6 +154,14 @@ select:focus-visible{
   border-color:var(--linea-clara);
   color:rgba(244,241,236,0.55);
 }
+/* Cuando espacio-imagen se usa en una <img> real (ya no es un placeholder) */
+img.espacio-imagen{
+  background:none;
+  border:none;
+  padding:0;
+  object-fit:cover;
+  width:100%;
+}
 
 /* ---- Línea de pulso (elemento de firma visual) ----
    Motivo recurrente inspirado en el trazo de un monitor de signos
