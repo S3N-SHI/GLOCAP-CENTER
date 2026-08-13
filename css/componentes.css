@@ -156,6 +156,7 @@
   background: var(--negro);
   color: var(--blanco);
 }
+
 /* ================= HERO ================= */
 
 .hero {
@@ -175,16 +176,12 @@
   inset: 0;
 
   background:
-    radial-gradient(
-      ellipse 900px 500px at 82% 12%,
+    radial-gradient(ellipse 900px 500px at 82% 12%,
       rgba(156, 27, 27, 0.35),
-      transparent 60%
-    ),
-    linear-gradient(
-      180deg,
+      transparent 60%),
+    linear-gradient(180deg,
       #15171B 0%,
-      #1B1E24 100%
-    );
+      #1B1E24 100%);
 
   z-index: 0;
 }
@@ -198,8 +195,12 @@
 
   /* texto izquierda / imagen derecha */
   grid-template-columns: 1.05fr 0.95fr;
+  grid-template-areas:
+    "texto  visual"
+    "cta    visual"
+    "franja visual";
 
-  gap: 56px;
+  gap: 0 56px;
 
   /* IMPORTANTE:
      evita que el texto se centre verticalmente
@@ -207,9 +208,21 @@
   align-items: start;
 }
 
-/* BLOQUE DE TEXTO */
 .hero-texto {
-  padding-top: 55px;
+  grid-area: texto;
+}
+
+.hero-cta {
+  grid-area: cta;
+}
+
+.hero-franja {
+  grid-area: franja;
+}
+
+.hero-visual {
+  position: relative;
+  min-width: 0;
 }
 
 /* TÍTULO */
@@ -298,14 +311,22 @@
 /* FOTO REAL */
 .hero-foto {
   width: 100%;
+  min-width: 0;
 
-  /* IMPORTANTE:
-     conserva la proporción completa de la imagen */
-  height: auto;
+  /* Altura controlada (NO usar min-height acá: combinado con
+     aspect-ratio fue lo que causó el desborde horizontal en móvil
+     que arreglamos antes). aspect-ratio solo, sin min-height, no
+     genera ese problema porque el ancho ya es definido (100% de
+     la columna) y no hay una altura mínima que "transferir". */
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  max-height: 680px;
+  object-position: center;
 
   display: block;
 
   border-radius: 6px;
+  
 }
 
 /* ================= FRANJA DE CONFIANZA ================= */

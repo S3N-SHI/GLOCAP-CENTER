@@ -15,20 +15,33 @@
 }
 
 /* ---- Portátiles / pantallas medianas ---- */
+@media (max-width: 1080px) {
+  .hero .contenedor {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "texto"
+      "visual"
+      "cta"
+      "franja";
+    gap: 0;
+  }
 
+  .hero-visual {
+    margin: 32px 0;
+  }
 
-.metodologia {
-  grid-template-columns: 1fr;
+  .metodologia {
+    grid-template-columns: 1fr;
+  }
+
+  .metodologia .espacio-imagen {
+    min-height: 300px;
+  }
+
+  .pie-rejilla {
+    grid-template-columns: 1fr 1fr;
+  }
 }
-
-.metodologia .espacio-imagen {
-  min-height: 300px;
-}
-
-.pie-rejilla {
-  grid-template-columns: 1fr 1fr;
-}
-
 /* ---- Tablet ---- */
 @media (max-width: 860px) {
   .nav-principal {
