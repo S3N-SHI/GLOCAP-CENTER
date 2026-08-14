@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-EC">
 
 <head>
   <meta charset="UTF-8">
@@ -7,6 +7,10 @@
   <title>GLOCAP CENTER · Formación en salud, educación y respuesta a emergencias</title>
   <meta name="description"
     content="GLOCAP CENTER forma profesionales en salud, atención prehospitalaria y respuesta a emergencias con programas técnicos y certificaciones internacionales.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://s3n-shi.github.io/GLOCAP-CENTER/">
+
+  <!-- Open Graph -->
   <meta property="og:title" content="GLOCAP CENTER — Conocimiento, impacto y excelencia a tu alcance.">
   <meta property="og:description"
     content="Programas de formación profesional y cursos de certificación en salud, atención prehospitalaria y respuesta a emergencias.">
@@ -14,7 +18,18 @@
   <meta property="og:image" content="https://s3n-shi.github.io/GLOCAP-CENTER/imagenes/preview-glocap.png">
   <meta property="og:url" content="https://s3n-shi.github.io/GLOCAP-CENTER/">
   <meta property="og:site_name" content="GLOCAP CENTER">
+  <meta property="og:locale" content="es_EC">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="GLOCAP CENTER — Conocimiento, impacto y excelencia a tu alcance.">
+  <meta name="twitter:description"
+    content="Programas de formación profesional y cursos de certificación en salud, atención prehospitalaria y respuesta a emergencias.">
+  <meta name="twitter:image" content="https://s3n-shi.github.io/GLOCAP-CENTER/imagenes/preview-glocap.png">
+
   <link rel="icon" href="imagenes/logo-glocap.png" type="image/png">
+  <link rel="apple-touch-icon" href="imagenes/logo-glocap.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -23,6 +38,23 @@
   <link rel="stylesheet" href="css/principal.css">
   <link rel="stylesheet" href="css/componentes.css">
   <link rel="stylesheet" href="css/responsivo.css">
+
+  <!-- Datos estructurados para buscadores -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "GLOCAP CENTER",
+    "url": "https://s3n-shi.github.io/GLOCAP-CENTER/",
+    "logo": "https://s3n-shi.github.io/GLOCAP-CENTER/imagenes/logo-glocap.png",
+    "description": "GLOCAP CENTER forma profesionales en salud, atención prehospitalaria y respuesta a emergencias con programas técnicos y certificaciones internacionales.",
+    "sameAs": [
+      "https://www.facebook.com/",
+      "https://www.instagram.com/",
+      "https://www.youtube.com/"
+    ]
+  }
+  </script>
 </head>
 
 <body>
@@ -32,7 +64,7 @@
   <header class="encabezado">
     <div class="contenedor">
       <a href="index.html" class="marca">
-        <img src="imagenes/logo-glocap.png" alt="GLOCAP CENTER">
+        <img src="imagenes/logo-glocap.png" alt="GLOCAP CENTER" width="160" height="40">
       </a>
       <nav class="nav-principal" id="nav-principal" aria-label="Navegación principal">
         <a href="paginas/nosotros.html">Nosotros</a>
@@ -43,9 +75,9 @@
       </nav>
       <div class="acciones-nav">
         <a href="paginas/iniciar-sesion.html" class="boton boton-fantasma">Campus Virtual</a>
-        <button class="interruptor-menu" id="interruptor-menu" aria-label="Abrir menú de navegación"
+        <button class="interruptor-menu" id="interruptor-menu" type="button" aria-label="Abrir menú de navegación"
           aria-expanded="false" aria-controls="nav-principal">
-          <span class="ic ic-menu"></span>
+          <span class="ic ic-menu" aria-hidden="true"></span>
         </button>
       </div>
     </div>
@@ -56,40 +88,64 @@
     <!-- ================= HERO ================= -->
     <section class="hero">
       <div class="contenedor">
-        <div class="hero-texto">
-          <p class="eyebrow">Salud · Educación · Respuesta a emergencias</p>
-          <h1 class="hero-titulo">Formamos a quienes <em>responden primero</em></h1>
-          <p class="hero-descripcion">
-            GLOCAP CENTER prepara profesionales de la salud y la respuesta a
-            emergencias con programas técnicos y certificaciones reconocidas,
-            combinando teoría, simulación clínica y práctica real.
-          </p>
-        </div>
-        <div class="hero-visual">
+        <div class="hero-contenido">
+          <div class="hero-texto">
+              <p class="eyebrow">Salud · Educación · Respuesta a emergencias</p>
+
+              <h1 class="hero-titulo">
+                  Formamos a quienes <em>responden primero</em>
+              </h1>
+
+              <p class="hero-descripcion">
+                  GLOCAP CENTER prepara profesionales de la salud y la respuesta a
+                  emergencias mediante programas técnicos y certificaciones reconocidas,
+                  combinando teoría, simulación clínica y práctica real.
+              </p>
+              <p class="espacio"></p>
+          </div>
+
+          <div class="hero-cta">
+              <a href="paginas/cursos.html" class="boton boton-primario">
+                  Ver programas
+              </a>
+
+              <a href="paginas/contacto.html" class="boton boton-fantasma">
+                  Hablar con un asesor
+              </a>
+          </div>
+
+          <div class="hero-franja">
+              <div class="hero-dato">
+                  <div class="num">+15</div>
+                  <div class="rot">Programas y cursos</div>
+              </div>
+
+              <div class="hero-dato">
+                  <div class="num">100%</div>
+                  <div class="rot">Instructores certificados</div>
+              </div>
+
+              <div class="hero-dato">
+                  <div class="num">Práctica</div>
+                  <div class="rot">Simulación clínica real</div>
+              </div>
+          </div>
+      </div>
+
+      <div class="hero-visual">
           <svg class="linea-pulso" viewBox="0 0 400 34" preserveAspectRatio="none" aria-hidden="true">
-            <path d="M0,17 L110,17 L128,4 L146,30 L164,17 L400,17"></path>
+              <path d="M0,17 L110,17 L128,4 L146,30 L164,17 L400,17"></path>
           </svg>
-          <img src="imagenes/instructor_estuiantes.png"
-            alt="Instructor y estudiantes en práctica de simulación clínica y atención prehospitalaria"
-            class="hero-foto">
-        </div>
-        <div class="hero-cta">
-          <a href="paginas/cursos.html" class="boton boton-primario">Ver programas</a>
-          <a href="paginas/contacto.html" class="boton boton-fantasma">Hablar con un asesor</a>
-        </div>
-        <div class="hero-franja">
-          <div class="hero-dato">
-            <div class="num">+15</div>
-            <div class="rot">Programas y cursos</div>
-          </div>
-          <div class="hero-dato">
-            <div class="num">100%</div>
-            <div class="rot">Instructores certificados</div>
-          </div>
-          <div class="hero-dato">
-            <div class="num">Práctica</div>
-            <div class="rot">Simulación clínica real</div>
-          </div>
+
+          <img
+              src="imagenes/instructor_estuiantes.png"
+              alt="Instructor y estudiantes en práctica de simulación clínica y atención prehospitalaria"
+              class="hero-foto"
+              width="853"
+              height="1280"
+              fetchpriority="high"
+          >
+      </div>
         </div>
       </div>
     </section>
@@ -99,19 +155,19 @@
       <div class="contenedor">
         <ul>
           <li>
-            <span class="ic ic-lg ic-verificar" style="color:var(--rojo-vivo);"></span>
+            <span class="ic ic-lg ic-verificar" style="color:var(--rojo-vivo);" aria-hidden="true"></span>
             <span><strong>Enfoque práctico</strong><span>Simulación clínica y casos reales</span></span>
           </li>
           <li>
-            <span class="ic ic-lg ic-certificado" style="color:var(--rojo-vivo);"></span>
+            <span class="ic ic-lg ic-certificado" style="color:var(--rojo-vivo);" aria-hidden="true"></span>
             <span><strong>Contenido actualizado</strong><span>Alineado a estándares vigentes</span></span>
           </li>
           <li>
-            <span class="ic ic-lg ic-usuarios" style="color:var(--rojo-vivo);"></span>
+            <span class="ic ic-lg ic-usuarios" style="color:var(--rojo-vivo);" aria-hidden="true"></span>
             <span><strong>Instructores calificados</strong><span>Experiencia en campo y clínica</span></span>
           </li>
           <li>
-            <span class="ic ic-lg ic-objetivo" style="color:var(--rojo-vivo);"></span>
+            <span class="ic ic-lg ic-objetivo" style="color:var(--rojo-vivo);" aria-hidden="true"></span>
             <span><strong>Orientado al empleo</strong><span>Competencias que exige el mercado</span></span>
           </li>
         </ul>
@@ -226,6 +282,7 @@
           <p class="eyebrow">Convenios</p>
           <h2 class="titulo-seccion">Instituciones que confían en GLOCAP</h2>
         </div>
+        <!-- TODO: reemplazar por los logos reales de los aliados con su respectivo alt descriptivo -->
         <div class="franja-alianzas" data-revelar>
           <div class="espacio-imagen"><span>[Logo aliado 1]</span></div>
           <div class="espacio-imagen"><span>[Logo aliado 2]</span></div>
@@ -238,6 +295,7 @@
         </div>
       </div>
     </section>
+
     <!-- ================= NOTICIAS ================= -->
     <section class="seccion">
       <div class="contenedor">
@@ -245,6 +303,7 @@
           <p class="eyebrow">Noticias</p>
           <h2 class="titulo-seccion">Actualidad GLOCAP CENTER</h2>
         </div>
+        <!-- TODO: reemplazar con noticias reales (fecha, título, imagen y resumen) -->
         <div class="rejilla-noticias" data-revelar>
           <article class="tarjeta-noticia">
             <div class="espacio-imagen"><span>[Imagen de la noticia 1]</span></div>
@@ -291,13 +350,14 @@
     <div class="contenedor">
       <div class="pie-rejilla">
         <div class="pie-marca">
-          <img src="imagenes/logo-glocap.png" alt="GLOCAP CENTER" style="height:38px;">
+          <img src="imagenes/logo-glocap.png" alt="GLOCAP CENTER" style="height:38px;" width="120" height="38">
           <p>Formamos profesionales en salud, educación y respuesta a emergencias con un enfoque práctico y actualizado.
           </p>
           <div class="redes-pie">
-            <a href="#" aria-label="Facebook"><span class="ic ic-facebook"></span></a>
-            <a href="#" aria-label="Instagram"><span class="ic ic-instagram"></span></a>
-            <a href="#" aria-label="YouTube"><span class="ic ic-youtube"></span></a>
+            <!-- TODO: reemplazar # por los enlaces reales de cada red social -->
+            <a href="#" aria-label="Facebook" target="_blank" rel="noopener"><span class="ic ic-facebook" aria-hidden="true"></span></a>
+            <a href="#" aria-label="Instagram" target="_blank" rel="noopener"><span class="ic ic-instagram" aria-hidden="true"></span></a>
+            <a href="#" aria-label="YouTube" target="_blank" rel="noopener"><span class="ic ic-youtube" aria-hidden="true"></span></a>
           </div>
         </div>
         <div>
@@ -328,16 +388,19 @@
       </div>
       <div class="pie-inferior">
         <span>© <span data-anio>2026</span> GLOCAP CENTER. Todos los derechos reservados.</span>
+        <!-- TODO: completar con la ciudad y país reales -->
         <span>[Ciudad, país]</span>
       </div>
     </div>
   </footer>
 
-  <a class="whatsapp-flotante enlace-whatsapp" aria-label="Escribir por WhatsApp" title="Escríbenos por WhatsApp">
-    <span class="ic ic-lg ic-whatsapp" style="color:#fff;"></span>
+  <!-- TODO: reemplazar href por el enlace real de WhatsApp, ej: https://wa.me/593XXXXXXXXX -->
+  <a class="whatsapp-flotante enlace-whatsapp" href="https://wa.me/593000000000" target="_blank" rel="noopener"
+    aria-label="Escribir por WhatsApp" title="Escríbenos por WhatsApp">
+    <span class="ic ic-lg ic-whatsapp" style="color:#fff;" aria-hidden="true"></span>
   </a>
-  <button class="volver-arriba" aria-label="Volver arriba">
-    <span class="ic ic-flecha-arriba" style="color:var(--negro);"></span>
+  <button class="volver-arriba" type="button" aria-label="Volver arriba">
+    <span class="ic ic-flecha-arriba" style="color:var(--negro);" aria-hidden="true"></span>
   </button>
 
   <script src="javascript/principal.js"></script>

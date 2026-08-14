@@ -18,12 +18,28 @@
 @media (max-width: 1080px) {
   .hero .contenedor {
     grid-template-columns: 1fr;
-    grid-template-areas:
-      "texto"
-      "visual"
-      "cta"
-      "franja";
-    gap: 0;
+    gap: 36px;
+  }
+
+  .hero-contenido {
+    max-width: 760px;
+  }
+
+  .hero-visual {
+    width: min(100%, 720px);
+    margin-inline: auto;
+  }
+
+  .metodologia {
+    grid-template-columns: 1fr;
+  }
+
+  .metodologia .espacio-imagen {
+    min-height: 300px;
+  }
+
+  .pie-rejilla {
+    grid-template-columns: 1fr 1fr;
   }
 
   .hero-visual {
@@ -109,13 +125,20 @@
 
 /* ---- Móvil ---- */
 @media (max-width: 560px) {
+
+  .hero-contenido {
+  width: 100%;
+}
+
+  .hero .contenedor {
+  gap: 28px;
+  }
   .contenedor {
     padding-inline: 18px;
   }
 
- 
   .hero {
-    padding: 140px 0 64px;
+  padding: 106px 0 56px;
   }
 
   .hero-franja {

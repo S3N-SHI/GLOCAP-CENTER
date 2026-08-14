@@ -2,6 +2,37 @@
    GLOCAP CENTER — componentes.css
    ===================================================== */
 
+/* ================= ACCESIBILIDAD GLOBAL ================= */
+/* Foco visible consistente para navegación por teclado.
+   Se aplica a todos los elementos interactivos del archivo. */
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--rojo-vivo);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Respeta la preferencia del usuario de reducir movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-revelar] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* ================= NAVEGACIÓN ================= */
 .encabezado {
   position: fixed;
@@ -93,6 +124,15 @@
   width: 100%;
 }
 
+/* ---- Estado activo en navegación ---- */
+.nav-principal a.activo {
+  color: var(--blanco);
+}
+
+.nav-principal a.activo::after {
+  width: 100%;
+}
+
 .acciones-nav {
   display: flex;
   align-items: center;
@@ -106,6 +146,18 @@
   border-radius: var(--radio);
   padding: 8px 10px;
   color: var(--blanco);
+  cursor: pointer;
+  transition: border-color var(--dur) var(--curva);
+}
+
+.interruptor-menu:hover {
+  border-color: var(--blanco);
+}
+
+/* ---- Botón hamburguesa como ícono SVG ---- */
+.interruptor-menu .ic {
+  width: 22px;
+  height: 22px;
 }
 
 /* ================= BOTONES ================= */
@@ -121,6 +173,7 @@
   padding: 14px 26px;
   border-radius: var(--radio);
   border: 1.5px solid transparent;
+  cursor: pointer;
   transition: transform var(--dur) var(--curva), background var(--dur) var(--curva), border-color var(--dur) var(--curva), color var(--dur) var(--curva);
   white-space: nowrap;
 }
@@ -192,20 +245,42 @@
   z-index: 1;
 
   display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(420px, 0.82fr);
+  align-items: center;
+  gap: 64px;
+}
 
-  /* texto izquierda / imagen derecha */
-  grid-template-columns: 1.05fr 0.95fr;
-  grid-template-areas:
-    "texto  visual"
-    "cta    visual"
-    "franja visual";
+.hero-contenido {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-  gap: 0 56px;
+.hero-texto {
+  max-width: 620px;
+}
 
-  /* IMPORTANTE:
-     evita que el texto se centre verticalmente
-     respecto a una imagen demasiado alta */
-  align-items: start;
+.hero-titulo {
+  font-size: clamp(42px, 4.4vw, 62px);
+  line-height: 0.98;
+  color: var(--blanco);
+}
+
+.hero-cta {
+  margin-top: 30px;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.hero-franja {
+  margin-top: 42px;
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  padding-top: 22px;
+  border-top: 1px solid var(--linea-clara);
 }
 
 .hero-texto {
@@ -213,16 +288,38 @@
 }
 
 .hero-cta {
-  grid-area: cta;
+  margin-top: 30px;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
 .hero-franja {
   grid-area: franja;
+  margin-top: 52px;
+  display: flex;
+  gap: 34px;
+  flex-wrap: wrap;
+  padding-top: 26px;
+  border-top: 1px solid var(--linea-clara);
 }
 
+/* Columna de la imagen: contiene la foto y la línea de pulso decorativa */
 .hero-visual {
   position: relative;
   min-width: 0;
+  width: 100%;
+}
+
+.hero-visual .linea-pulso {
+  position: absolute;
+  top: -18px;
+  left: -10px;
+  right: -10px;
+  color: var(--rojo-vivo);
+  opacity: 0.55;
+  z-index: 2;
+  pointer-events: none;
 }
 
 /* TÍTULO */
@@ -238,34 +335,11 @@
 
 /* DESCRIPCIÓN */
 .hero-descripcion {
-  margin-top: 22px;
-  max-width: 46ch;
-
-  font-size: 17px;
-
+  margin-top: 50px;
+  max-width: 40ch;
+  font-size: 16px;
+  line-height: 1.70;
   color: rgba(244, 241, 236, 0.78);
-}
-
-/* BOTONES */
-.hero-cta {
-  margin-top: 34px;
-
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-/* DATOS DE LA PARTE INFERIOR */
-.hero-franja {
-  margin-top: 52px;
-
-  display: flex;
-  gap: 34px;
-  flex-wrap: wrap;
-
-  padding-top: 26px;
-
-  border-top: 1px solid var(--linea-clara);
 }
 
 .hero-dato .num {
@@ -276,57 +350,21 @@
 
 .hero-dato .rot {
   font-family: var(--f-mono);
-
   font-size: 11px;
   letter-spacing: 0.08em;
-
   text-transform: uppercase;
-
   color: rgba(244, 241, 236, 0.55);
-}
-
-/* ================= IMAGEN DEL HERO ================= */
-
-.hero-visual {
-  position: relative;
-}
-
-/* línea de pulso roja */
-.hero-visual .linea-pulso {
-  position: absolute;
-
-  top: -18px;
-  left: -10px;
-  right: -10px;
-
-  color: var(--rojo-vivo);
-
-  opacity: 0.55;
-
-  z-index: 2;
-
-  pointer-events: none;
 }
 
 /* FOTO REAL */
 .hero-foto {
   width: 100%;
-  min-width: 0;
-
-  /* Altura controlada (NO usar min-height acá: combinado con
-     aspect-ratio fue lo que causó el desborde horizontal en móvil
-     que arreglamos antes). aspect-ratio solo, sin min-height, no
-     genera ese problema porque el ancho ya es definido (100% de
-     la columna) y no hay una altura mínima que "transferir". */
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  max-height: 680px;
+  height: auto;
+  max-height: auto;
+  object-fit: contain;
   object-position: center;
-
   display: block;
-
   border-radius: 6px;
-  
 }
 
 /* ================= FRANJA DE CONFIANZA ================= */
@@ -482,6 +520,7 @@
   padding: 11px 22px;
   border-radius: 999px;
   color: var(--texto-secundario);
+  cursor: pointer;
   transition: background var(--dur) var(--curva), color var(--dur) var(--curva);
 }
 
@@ -793,6 +832,7 @@
 .campo input,
 .campo select,
 .campo textarea {
+  width: 100%;
   border: 1.5px solid var(--linea);
   border-radius: var(--radio);
   padding: 13px 14px;
@@ -863,25 +903,18 @@
   padding: 0;
 }
 
-.espacio-imagen iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
-}
-
-
-.mapa-glocap {
-  position: relative;
-  overflow: hidden;
-  padding: 0;
-}
-
+.espacio-imagen iframe,
 .mapa-glocap iframe {
   width: 100%;
   height: 100%;
   border: 0;
   display: block;
+}
+
+.mapa-glocap {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
 }
 
 /* Etiqueta sobre el mapa */
@@ -903,8 +936,7 @@
 
   border-radius: 6px;
 
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.20);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.20);
 
   pointer-events: none;
 }
@@ -913,36 +945,26 @@
 .punto-glocap {
   width: 12px;
   height: 12px;
-
   background: #e31b23;
-
   border: 3px solid #ffffff;
   border-radius: 50%;
-
-  box-shadow:
-    0 0 0 2px #e31b23;
-
+  box-shadow: 0 0 0 2px #e31b23;
   flex-shrink: 0;
 }
 
 .etiqueta-glocap strong {
   display: block;
-
   font-family: "Barlow Condensed", sans-serif;
   font-size: 16px;
-
   color: #111;
 }
 
 .etiqueta-glocap small {
   display: block;
-
   font-family: "Inter", sans-serif;
   font-size: 11px;
-
   color: #666;
 }
-
 
 /* ================= WHATSAPP FLOTANTE ================= */
 .whatsapp-flotante {
@@ -958,6 +980,7 @@
   align-items: center;
   justify-content: center;
   color: #fff;
+  cursor: pointer;
   box-shadow: var(--sombra-fuerte);
   transition: transform var(--dur) var(--curva);
 }
@@ -1025,6 +1048,12 @@
   justify-content: center;
   font-family: var(--f-mono);
   font-size: 10px;
+  transition: border-color var(--dur) var(--curva), background var(--dur) var(--curva);
+}
+
+.redes-pie a:hover {
+  background: var(--rojo-vivo);
+  border-color: var(--rojo-vivo);
 }
 
 .pie-inferior {
@@ -1050,6 +1079,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   box-shadow: var(--sombra-suave);
   opacity: 0;
   pointer-events: none;
@@ -1310,6 +1340,7 @@
   font-size: 12px;
   letter-spacing: 0.04em;
   color: var(--texto);
+  cursor: pointer;
   transition: background var(--dur) var(--curva), color var(--dur) var(--curva), border-color var(--dur) var(--curva);
 }
 
@@ -1617,19 +1648,9 @@
   border: 1px solid var(--linea);
   border-radius: 999px;
   padding: 10px 18px;
+  transition: border-color var(--dur) var(--curva);
 }
 
-/* ---- Estado activo en navegación ---- */
-.nav-principal a.activo {
-  color: var(--blanco);
-}
-
-.nav-principal a.activo::after {
-  width: 100%;
-}
-
-/* ---- Botón hamburguesa como ícono SVG ---- */
-.interruptor-menu .ic {
-  width: 22px;
-  height: 22px;
+.volver-inicio-login:hover {
+  border-color: var(--rojo-vivo);
 }
