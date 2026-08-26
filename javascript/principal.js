@@ -137,7 +137,7 @@ function inicializarAnioFooter() {
 
 /* ---- Enlaces de WhatsApp ---- */
 function inicializarWhatsApp() {
-  const urlWhatsApp = 'https://wa.me/message/AOJNA4MM54GOK1?src=qr';
+  const urlWhatsApp = 'https://api.whatsapp.com/send/?phone=593999023286&text&type=phone_number&app_absent=0';
 
   const enlaces = document.querySelectorAll('.enlace-whatsapp');
 
