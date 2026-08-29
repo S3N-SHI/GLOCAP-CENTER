@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel · Campus Virtual GLOCAP CENTER</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../../imagenes/logo-glocap.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/principal.css">
+<link rel="stylesheet" href="../../css/componentes.css">
+<link rel="stylesheet" href="../../css/responsivo.css">
+</head>
+<body>
+
+<header class="encabezado con-scroll">
+  <div class="contenedor">
+    <a href="../../index.html" class="marca">
+      <img src="../../imagenes/logo-glocap.png" alt="GLOCAP CENTER">
+    </a>
+    <div class="acciones-nav">
+      <a href="../../index.html" class="boton boton-fantasma">Ir al sitio</a>
+      <button id="boton-cerrar-sesion" class="boton boton-primario">Cerrar sesión</button>
+    </div>
+  </div>
+</header>
+
+<section class="panel-encabezado">
+  <div class="contenedor">
+    <p class="eyebrow" style="color:var(--rojo-vivo);">Campus Virtual</p>
+    <h1 class="hero-titulo" style="font-size:clamp(28px,4vw,42px);">Hola, <span id="saludo-nombre">...</span></h1>
+    <span class="rol-insignia" id="insignia-rol"></span>
+  </div>
+</section>
+
+<main id="contenido-principal">
+
+  <!-- ============ SECCIÓN VISIBLE PARA TODOS ============ -->
+  <section class="seccion" style="padding-top:56px;">
+    <div class="contenedor">
+      <div class="encabezado-seccion" data-revelar>
+        <p class="eyebrow">Mi cuenta</p>
+        <h2 class="titulo-seccion">Datos de tu cuenta</h2>
+      </div>
+      <div class="panel-fila">
+        <div class="panel-fila-info">
+          <h4 id="mi-nombre">—</h4>
+          <p id="mi-correo">—</p>
+          <span class="meta" id="mi-rol">—</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SOLO ADMIN: NOTICIAS ============ -->
+  <section class="seccion seccion-alterna" id="seccion-noticias" style="display:none;">
+    <div class="contenedor">
+      <div class="encabezado-seccion" data-revelar>
+        <p class="eyebrow">Admin</p>
+        <h2 class="titulo-seccion">Gestionar noticias</h2>
+        <p class="parrafo-guia">Se notifica por correo a todos los usuarios con cuenta verificada apenas publicás.</p>
+      </div>
+
+      <p class="panel-mensaje" id="mensaje-noticias"></p>
+
+      <form id="form-noticia" enctype="multipart/form-data" style="margin-bottom:48px; max-width:620px;">
+        <input type="hidden" id="noticia-id-edicion">
+        <div class="campo">
+          <label for="noticia-titulo">Título</label>
+          <input type="text" id="noticia-titulo" required>
+        </div>
+        <div class="campo" style="margin-top:16px;">
+          <label for="noticia-contenido">Contenido</label>
+          <textarea id="noticia-contenido" required></textarea>
+        </div>
+        <div class="campo" style="margin-top:16px;">
+          <label for="noticia-imagen">Imagen (opcional)</label>
+          <input type="file" id="noticia-imagen" accept="image/jpeg,image/png,image/webp,image/gif">
+        </div>
+        <div class="campo" style="margin-top:16px;">
+          <label for="noticia-expiracion">Fecha de caducidad (opcional — vacío = indefinida)</label>
+          <input type="date" id="noticia-expiracion">
+        </div>
+        <div style="display:flex; gap:10px; margin-top:20px;">
+          <button type="submit" class="boton boton-primario" id="boton-guardar-noticia">Publicar noticia</button>
+          <button type="button" class="boton-secundario-chico" id="boton-cancelar-edicion" style="display:none;">Cancelar edición</button>
+        </div>
+      </form>
+
+      <div id="lista-noticias-admin"></div>
+    </div>
+  </section>
+
+  <!-- ============ SOLO ADMIN: USUARIOS Y ROLES ============ -->
+  <section class="seccion" id="seccion-usuarios" style="display:none;">
+    <div class="contenedor">
+      <div class="encabezado-seccion" data-revelar>
+        <p class="eyebrow">Admin</p>
+        <h2 class="titulo-seccion">Usuarios y roles</h2>
+        <p class="parrafo-guia">Todos se registran como estudiante. Acá podés ascender a alguien a admin, o quitarle el rol.</p>
+      </div>
+
+      <p class="panel-mensaje" id="mensaje-usuarios"></p>
+
+      <div id="lista-usuarios"></div>
+    </div>
+  </section>
+
+</main>
+
+<script src="../../javascript/api.js"></script>
+<script>
+  // --- Guardia de acceso: sin sesión, afuera ---
+  const usuarioActual = ApiGlocap.obtenerUsuario();
+  if (!usuarioActual || !ApiGlocap.obtenerToken()) {
+    window.location.href = '../iniciar-sesion.html';
+  }
+
+  document.getElementById('saludo-nombre').textContent = usuarioActual.nombre.split(' ')[0];
+  document.getElementById('mi-nombre').textContent = usuarioActual.nombre;
+  document.getElementById('mi-correo').textContent = usuarioActual.correo;
+  document.getElementById('mi-rol').textContent = `Rol: ${usuarioActual.rol}`;
+  document.getElementById('insignia-rol').textContent = usuarioActual.rol;
+
+  document.getElementById('boton-cerrar-sesion').addEventListener('click', () => {
+    ApiGlocap.cerrarSesion();
+    window.location.href = '../iniciar-sesion.html';
+  });
+
+  const esAdmin = usuarioActual.rol === 'ADMIN';
+  if (esAdmin) {
+    document.getElementById('seccion-noticias').style.display = 'block';
+    document.getElementById('seccion-usuarios').style.display = 'block';
+    cargarNoticiasAdmin();
+    cargarUsuarios();
+  }
+
+  function mostrarMensaje(id, texto, tipo) {
+    const el = document.getElementById(id);
+    el.textContent = texto;
+    el.className = `panel-mensaje ${tipo}`;
+  }
+
+  function formatearFecha(iso) {
+    if (!iso) return 'Sin caducidad';
+    return new Date(iso).toLocaleDateString('es-EC', { year: 'numeric', month: 'short', day: 'numeric' });
+  }
+
+  // ============ NOTICIAS (ADMIN) ============
+  async function cargarNoticiasAdmin() {
+    const contenedor = document.getElementById('lista-noticias-admin');
+    try {
+      const { noticias } = await ApiGlocap.listarNoticiasAdmin();
+      if (!noticias.length) {
+        contenedor.innerHTML = '<p class="panel-vacio">Todavía no hay noticias publicadas.</p>';
+        return;
+      }
+      contenedor.innerHTML = noticias.map((noticia) => `
+        <div class="panel-fila">
+          <div class="panel-fila-info">
+            <h4>${escaparHtml(noticia.titulo)}</h4>
+            <p>${escaparHtml(noticia.contenido.slice(0, 140))}${noticia.contenido.length > 140 ? '…' : ''}</p>
+            <span class="meta">Publicado por ${escaparHtml(noticia.autor || '—')} · Caduca: ${formatearFecha(noticia.fechaExpiracion)}</span>
+          </div>
+          <div class="panel-fila-acciones">
+            <button class="boton-secundario-chico" onclick="editarNoticia('${noticia.id}')">Editar</button>
+            <button class="boton-peligro" onclick="borrarNoticia('${noticia.id}')">Borrar</button>
+          </div>
+        </div>
+      `).join('');
+    } catch (error) {
+      mostrarMensaje('mensaje-noticias', error.message, 'error');
+    }
+  }
+
+  let noticiasCache = [];
+  async function editarNoticia(id) {
+    const { noticias } = await ApiGlocap.listarNoticiasAdmin();
+    noticiasCache = noticias;
+    const noticia = noticias.find((n) => n.id === id);
+    if (!noticia) return;
+
+    document.getElementById('noticia-id-edicion').value = noticia.id;
+    document.getElementById('noticia-titulo').value = noticia.titulo;
+    document.getElementById('noticia-contenido').value = noticia.contenido;
+    document.getElementById('noticia-expiracion').value = noticia.fechaExpiracion
+      ? noticia.fechaExpiracion.slice(0, 10)
+      : '';
+    document.getElementById('boton-guardar-noticia').textContent = 'Guardar cambios';
+    document.getElementById('boton-cancelar-edicion').style.display = 'inline-block';
+    document.getElementById('form-noticia').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  document.getElementById('boton-cancelar-edicion').addEventListener('click', () => {
+    document.getElementById('form-noticia').reset();
+    document.getElementById('noticia-id-edicion').value = '';
+    document.getElementById('boton-guardar-noticia').textContent = 'Publicar noticia';
+    document.getElementById('boton-cancelar-edicion').style.display = 'none';
+  });
+
+  async function borrarNoticia(id) {
+    if (!confirm('¿Seguro que querés borrar esta noticia? No se puede deshacer.')) return;
+    try {
+      await ApiGlocap.borrarNoticia(id);
+      mostrarMensaje('mensaje-noticias', 'Noticia borrada.', 'ok');
+      cargarNoticiasAdmin();
+    } catch (error) {
+      mostrarMensaje('mensaje-noticias', error.message, 'error');
+    }
+  }
+
+  document.getElementById('form-noticia').addEventListener('submit', async (evento) => {
+    evento.preventDefault();
+    const id = document.getElementById('noticia-id-edicion').value;
+    const formData = new FormData();
+    formData.append('titulo', document.getElementById('noticia-titulo').value);
+    formData.append('contenido', document.getElementById('noticia-contenido').value);
+    formData.append('fechaExpiracion', document.getElementById('noticia-expiracion').value);
+    const archivo = document.getElementById('noticia-imagen').files[0];
+    if (archivo) formData.append('imagen', archivo);
+
+    try {
+      if (id) {
+        await ApiGlocap.editarNoticia(id, formData);
+        mostrarMensaje('mensaje-noticias', 'Noticia actualizada.', 'ok');
+      } else {
+        await ApiGlocap.crearNoticia(formData);
+        mostrarMensaje('mensaje-noticias', 'Noticia publicada. Se está notificando a los usuarios verificados.', 'ok');
+      }
+      document.getElementById('form-noticia').reset();
+      document.getElementById('noticia-id-edicion').value = '';
+      document.getElementById('boton-guardar-noticia').textContent = 'Publicar noticia';
+      document.getElementById('boton-cancelar-edicion').style.display = 'none';
+      cargarNoticiasAdmin();
+    } catch (error) {
+      mostrarMensaje('mensaje-noticias', error.message, 'error');
+    }
+  });
+
+  // ============ USUARIOS Y ROLES (ADMIN) ============
+  async function cargarUsuarios() {
+    const contenedor = document.getElementById('lista-usuarios');
+    try {
+      const { usuarios } = await ApiGlocap.listarUsuarios();
+      contenedor.innerHTML = usuarios.map((usuario) => `
+        <div class="panel-fila">
+          <div class="panel-fila-info">
+            <h4>${escaparHtml(usuario.nombre)}</h4>
+            <p>${escaparHtml(usuario.correo)}</p>
+            <span class="meta">${usuario.correoVerificado ? 'Correo verificado' : 'Correo sin verificar'}</span>
+          </div>
+          <div class="panel-fila-acciones">
+            <select id="rol-${usuario.id}" ${usuario.id === usuarioActual.id ? 'disabled' : ''}>
+              <option value="ESTUDIANTE" ${usuario.rol === 'ESTUDIANTE' ? 'selected' : ''}>Estudiante</option>
+              <option value="ADMIN" ${usuario.rol === 'ADMIN' ? 'selected' : ''}>Admin</option>
+            </select>
+            <button class="boton-secundario-chico" ${usuario.id === usuarioActual.id ? 'disabled' : ''} onclick="cambiarRol('${usuario.id}')">Guardar</button>
+          </div>
+        </div>
+      `).join('');
+    } catch (error) {
+      mostrarMensaje('mensaje-usuarios', error.message, 'error');
+    }
+  }
+
+  async function cambiarRol(id) {
+    const rol = document.getElementById(`rol-${id}`).value;
+    try {
+      const { mensaje } = await ApiGlocap.cambiarRol(id, rol);
+      mostrarMensaje('mensaje-usuarios', mensaje, 'ok');
+      cargarUsuarios();
+    } catch (error) {
+      mostrarMensaje('mensaje-usuarios', error.message, 'error');
+    }
+  }
+
+  function escaparHtml(texto) {
+    const div = document.createElement('div');
+    div.textContent = texto ?? '';
+    return div.innerHTML;
+  }
+</script>
+</body>
+</html>

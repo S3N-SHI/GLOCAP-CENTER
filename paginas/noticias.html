@@ -49,48 +49,8 @@
 
 <section class="seccion">
   <div class="contenedor">
-    <div class="rejilla-noticias" data-revelar>
-      <article class="tarjeta-noticia">
-        <div class="espacio-imagen"><span>[Imagen 1]</span></div>
-        <p class="fecha">[Fecha]</p>
-        <h3>[Título de la publicación 1]</h3>
-        <p>Breve resumen del contenido de la publicación institucional o académica.</p>
-      </article>
-      <article class="tarjeta-noticia">
-        <div class="espacio-imagen"><span>[Imagen 2]</span></div>
-        <p class="fecha">[Fecha]</p>
-        <h3>[Título de la publicación 2]</h3>
-        <p>Breve resumen del contenido de la publicación institucional o académica.</p>
-      </article>
-      <article class="tarjeta-noticia">
-        <div class="espacio-imagen"><span>[Imagen 3]</span></div>
-        <p class="fecha">[Fecha]</p>
-        <h3>[Título de la publicación 3]</h3>
-        <p>Breve resumen del contenido de la publicación institucional o académica.</p>
-      </article>
-      <article class="tarjeta-noticia">
-        <div class="espacio-imagen"><span>[Imagen 4]</span></div>
-        <p class="fecha">[Fecha]</p>
-        <h3>[Título de la publicación 4]</h3>
-        <p>Breve resumen del contenido de la publicación institucional o académica.</p>
-      </article>
-      <article class="tarjeta-noticia">
-        <div class="espacio-imagen"><span>[Imagen 5]</span></div>
-        <p class="fecha">[Fecha]</p>
-        <h3>[Título de la publicación 5]</h3>
-        <p>Breve resumen del contenido de la publicación institucional o académica.</p>
-      </article>
-      <article class="tarjeta-noticia">
-        <div class="espacio-imagen"><span>[Imagen 6]</span></div>
-        <p class="fecha">[Fecha]</p>
-        <h3>[Título de la publicación 6]</h3>
-        <p>Breve resumen del contenido de la publicación institucional o académica.</p>
-      </article>
-    </div>
-    <div style="display:flex; justify-content:center; gap:8px; margin-top:44px;">
-      <button class="chip-filtro activo">1</button>
-      <button class="chip-filtro">2</button>
-      <button class="chip-filtro">3</button>
+    <div class="rejilla-noticias" id="rejilla-noticias" data-revelar>
+      <p class="panel-vacio">Cargando noticias…</p>
     </div>
   </div>
 </section>
@@ -151,6 +111,46 @@
   <span class="ic ic-flecha-arriba" style="color:var(--negro);"></span>
 </button>
 
+<script src="../javascript/api.js"></script>
 <script src="../javascript/principal.js"></script>
+<script>
+  function escaparHtml(texto) {
+    const div = document.createElement('div');
+    div.textContent = texto ?? '';
+    return div.innerHTML;
+  }
+
+  function formatearFecha(iso) {
+    return new Date(iso).toLocaleDateString('es-EC', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  async function cargarNoticias() {
+    const contenedor = document.getElementById('rejilla-noticias');
+    try {
+      const { noticias } = await ApiGlocap.listarNoticiasPublicas();
+
+      if (!noticias.length) {
+        contenedor.innerHTML = '<p class="panel-vacio">Todavía no hay noticias publicadas. Volvé pronto.</p>';
+        return;
+      }
+
+      contenedor.innerHTML = noticias.map((noticia) => `
+        <article class="tarjeta-noticia">
+          ${noticia.imagenUrl
+            ? `<img src="${escaparHtml(noticia.imagenUrl)}" alt="${escaparHtml(noticia.titulo)}" class="espacio-imagen">`
+            : `<div class="espacio-imagen"><span>GLOCAP CENTER</span></div>`
+          }
+          <p class="fecha">${formatearFecha(noticia.creadoEn)}</p>
+          <h3>${escaparHtml(noticia.titulo)}</h3>
+          <p>${escaparHtml(noticia.contenido.slice(0, 160))}${noticia.contenido.length > 160 ? '…' : ''}</p>
+        </article>
+      `).join('');
+    } catch (error) {
+      contenedor.innerHTML = `<p class="panel-vacio">No se pudieron cargar las noticias (${escaparHtml(error.message)}).</p>`;
+    }
+  }
+
+  cargarNoticias();
+</script>
 </body>
 </html>

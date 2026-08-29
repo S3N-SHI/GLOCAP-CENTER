@@ -26,10 +26,13 @@
       <div class="marca-login">
         <img src="../imagenes/logo-glocap.png" alt="GLOCAP CENTER">
       </div>
-      <h1>Campus Virtual</h1>
-      <p class="subtexto">Ingresa con tu cuenta de estudiante o instructor.</p>
+      <h1 id="titulo-tarjeta-login">Campus Virtual</h1>
+      <p class="subtexto" id="subtexto-tarjeta-login">Ingresa con tu cuenta de estudiante o instructor.</p>
 
-      <form aria-label="Formulario de inicio de sesión">
+      <p id="mensaje-login" role="alert" style="display:none; font-size:13.5px; padding:10px 14px; border-radius:4px; margin-bottom:16px;"></p>
+
+      <!-- ============ VISTA: INICIAR SESIÓN ============ -->
+      <form id="form-login" aria-label="Formulario de inicio de sesión">
         <div class="campo">
           <label for="correo-login">Correo electrónico</label>
           <input type="email" id="correo-login" name="correo" required>
@@ -38,21 +41,164 @@
           <label for="clave-login">Contraseña</label>
           <input type="password" id="clave-login" name="clave" required>
         </div>
-        <div class="fila-login-extra">
-          <label style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--texto-secundario);">
-            <input type="checkbox" style="width:auto;"> Recordarme
-          </label>
-          <a href="#">¿Olvidaste tu contraseña?</a>
-        </div>
         <button type="submit" class="boton boton-primario">Iniciar sesión</button>
       </form>
 
+      <!-- ============ VISTA: CREAR CUENTA ============ -->
+      <form id="form-registro" aria-label="Formulario de registro" style="display:none;">
+        <div class="campo">
+          <label for="nombre-registro">Nombre completo</label>
+          <input type="text" id="nombre-registro" name="nombre" required>
+        </div>
+        <div class="campo" style="margin-top:16px;">
+          <label for="correo-registro">Correo electrónico</label>
+          <input type="email" id="correo-registro" name="correo" required>
+        </div>
+        <div class="campo" style="margin-top:16px;">
+          <label for="clave-registro">Contraseña</label>
+          <input type="password" id="clave-registro" name="clave" minlength="8" required>
+          <span style="font-size:12px; color:var(--texto-secundario);">Mínimo 8 caracteres.</span>
+        </div>
+        <button type="submit" class="boton boton-primario">Crear cuenta</button>
+      </form>
+
+      <!-- ============ VISTA: VERIFICAR CÓDIGO ============ -->
+      <form id="form-verificacion" aria-label="Formulario de verificación de correo" style="display:none;">
+        <p class="subtexto">Te mandamos un código de 6 dígitos a <strong id="correo-a-verificar"></strong>. Revisá también la carpeta de spam.</p>
+        <div class="campo" style="margin-top:16px;">
+          <label for="codigo-verificacion">Código de verificación</label>
+          <input type="text" id="codigo-verificacion" name="codigo" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required>
+        </div>
+        <button type="submit" class="boton boton-primario">Verificar</button>
+        <button type="button" id="boton-reenviar-codigo" class="boton boton-fantasma" style="margin-top:10px;">Reenviar código</button>
+      </form>
+
       <div class="separador-login">Campus Virtual</div>
-      <p class="subtexto" style="margin-bottom:0;">¿Aún no tienes cuenta? <a href="../paginas/contacto.html" style="color:var(--rojo-vivo);">Contáctanos para inscribirte</a>.</p>
+      <p class="subtexto" style="margin-bottom:0;" id="alternar-vista-contenedor">
+        ¿Aún no tenés cuenta? <a href="#" id="alternar-vista">Creá una acá</a>.
+      </p>
     </div>
   </div>
 </main>
 
+<script src="../javascript/api.js"></script>
 <script src="../javascript/principal.js"></script>
+<script>
+  const vistas = {
+    login: document.getElementById('form-login'),
+    registro: document.getElementById('form-registro'),
+    verificacion: document.getElementById('form-verificacion'),
+  };
+  const titulo = document.getElementById('titulo-tarjeta-login');
+  const subtexto = document.getElementById('subtexto-tarjeta-login');
+  const alternarContenedor = document.getElementById('alternar-vista-contenedor');
+  const mensaje = document.getElementById('mensaje-login');
+
+  function mostrarVista(nombre) {
+    Object.values(vistas).forEach((form) => (form.style.display = 'none'));
+    vistas[nombre].style.display = 'block';
+    ocultarMensaje();
+
+    if (nombre === 'login') {
+      titulo.textContent = 'Campus Virtual';
+      subtexto.textContent = 'Ingresa con tu cuenta de estudiante o instructor.';
+      alternarContenedor.style.display = 'block';
+    } else if (nombre === 'registro') {
+      titulo.textContent = 'Crear cuenta';
+      subtexto.textContent = 'Registrate para acceder al Campus Virtual.';
+      alternarContenedor.style.display = 'block';
+    } else {
+      titulo.textContent = 'Verificá tu correo';
+      subtexto.textContent = '';
+      alternarContenedor.style.display = 'none';
+    }
+  }
+
+  function mostrarMensaje(texto, tipo) {
+    mensaje.textContent = texto;
+    mensaje.style.display = 'block';
+    mensaje.style.background = tipo === 'error' ? 'rgba(196,40,31,0.1)' : 'rgba(21,23,27,0.06)';
+    mensaje.style.color = tipo === 'error' ? 'var(--rojo-vivo)' : 'var(--texto)';
+  }
+  function ocultarMensaje() {
+    mensaje.style.display = 'none';
+  }
+
+  document.getElementById('alternar-vista').addEventListener('click', (evento) => {
+    evento.preventDefault();
+    const estabaEnLogin = vistas.login.style.display !== 'none';
+    mostrarVista(estabaEnLogin ? 'registro' : 'login');
+    const enlace = document.getElementById('alternar-vista');
+    const contenedor = document.getElementById('alternar-vista-contenedor');
+    if (estabaEnLogin) {
+      // Acabamos de pasar a la vista de registro.
+      contenedor.firstChild.textContent = '¿Ya tenés cuenta? ';
+      enlace.textContent = 'Iniciá sesión';
+    } else {
+      // Acabamos de volver a la vista de login.
+      contenedor.firstChild.textContent = '¿Aún no tenés cuenta? ';
+      enlace.textContent = 'Creá una acá';
+    }
+  });
+
+  let correoPendienteDeVerificar = '';
+
+  vistas.login.addEventListener('submit', async (evento) => {
+    evento.preventDefault();
+    ocultarMensaje();
+    const correo = document.getElementById('correo-login').value.trim();
+    const clave = document.getElementById('clave-login').value;
+    try {
+      const { token, usuario } = await ApiGlocap.iniciarSesion(correo, clave);
+      ApiGlocap.guardarSesion(token, usuario);
+      window.location.href = 'campus/panel.html';
+    } catch (error) {
+      mostrarMensaje(error.message, 'error');
+    }
+  });
+
+  vistas.registro.addEventListener('submit', async (evento) => {
+    evento.preventDefault();
+    ocultarMensaje();
+    const nombre = document.getElementById('nombre-registro').value.trim();
+    const correo = document.getElementById('correo-registro').value.trim();
+    const clave = document.getElementById('clave-registro').value;
+    try {
+      await ApiGlocap.registro(nombre, correo, clave);
+      correoPendienteDeVerificar = correo;
+      document.getElementById('correo-a-verificar').textContent = correo;
+      mostrarVista('verificacion');
+    } catch (error) {
+      mostrarMensaje(error.message, 'error');
+    }
+  });
+
+  vistas.verificacion.addEventListener('submit', async (evento) => {
+    evento.preventDefault();
+    ocultarMensaje();
+    const codigo = document.getElementById('codigo-verificacion').value.trim();
+    try {
+      const { token, usuario } = await ApiGlocap.verificar(correoPendienteDeVerificar, codigo);
+      ApiGlocap.guardarSesion(token, usuario);
+      window.location.href = 'campus/panel.html';
+    } catch (error) {
+      mostrarMensaje(error.message, 'error');
+    }
+  });
+
+  document.getElementById('boton-reenviar-codigo').addEventListener('click', async () => {
+    try {
+      await ApiGlocap.reenviarCodigo(correoPendienteDeVerificar);
+      mostrarMensaje('Te mandamos un código nuevo.', 'ok');
+    } catch (error) {
+      mostrarMensaje(error.message, 'error');
+    }
+  });
+
+  // Si ya hay sesión guardada, mandarlo directo al panel.
+  if (ApiGlocap.obtenerToken()) {
+    window.location.href = 'campus/panel.html';
+  }
+</script>
 </body>
 </html>

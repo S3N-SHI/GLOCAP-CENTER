@@ -1,0 +1,68 @@
+// Esquema de base de datos — GLOCAP CENTER
+// Documentación: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+// ---------------------------------------------------------------
+// ROLES
+// ---------------------------------------------------------------
+// Todo el mundo se registra como ESTUDIANTE. Nadie puede elegir su
+// propio rol desde el formulario de registro (eso se controla en el
+// controlador, no acá). El rol ADMIN solo se otorga de dos formas:
+//   1) Automáticamente, una única vez, si el correo coincide con la
+//      variable de entorno ADMIN_EMAIL_INICIAL al verificar la cuenta.
+//   2) Manualmente, por un admin ya existente, desde el panel.
+enum Rol {
+  ESTUDIANTE
+  ADMIN
+}
+
+model Usuario {
+  id                 String    @id @default(uuid())
+  nombre             String
+  correo             String    @unique
+  contrasenaHash     String    @map("contrasena_hash")
+  rol                Rol       @default(ESTUDIANTE)
+
+  // --- Verificación de correo ---
+  correoVerificado   Boolean   @default(false) @map("correo_verificado")
+  codigoVerificacion String?   @map("codigo_verificacion")
+  codigoExpiraEn     DateTime? @map("codigo_expira_en")
+
+  creadoEn           DateTime  @default(now()) @map("creado_en")
+  actualizadoEn      DateTime  @updatedAt @map("actualizado_en")
+
+  noticiasCreadas    Noticia[] @relation("NoticiasDelAutor")
+
+  @@map("usuarios")
+}
+
+// ---------------------------------------------------------------
+// NOTICIAS
+// ---------------------------------------------------------------
+model Noticia {
+  id               String    @id @default(uuid())
+  titulo           String
+  contenido        String
+  imagenUrl        String?   @map("imagen_url")
+
+  // Null = sin fecha de caducidad (queda indefinida hasta que se borre).
+  // Este campo NUNCA se expone en las rutas públicas — es de uso
+  // exclusivo del panel de admin (ver controladores/noticias).
+  fechaExpiracion  DateTime? @map("fecha_expiracion")
+
+  autorId          String    @map("autor_id")
+  autor            Usuario   @relation("NoticiasDelAutor", fields: [autorId], references: [id])
+
+  creadoEn         DateTime  @default(now()) @map("creado_en")
+  actualizadoEn    DateTime  @updatedAt @map("actualizado_en")
+
+  @@map("noticias")
+}

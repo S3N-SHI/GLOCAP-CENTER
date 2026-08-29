@@ -722,6 +722,10 @@
   margin-bottom: 18px;
 }
 
+.tarjeta-noticia img.espacio-imagen {
+  height: 180px;
+}
+
 .tarjeta-noticia .fecha {
   font-family: var(--f-mono);
   font-size: 11px;
@@ -1653,4 +1657,102 @@
 .interruptor-menu .ic {
   width: 22px;
   height: 22px;
+}
+/* ================= PANEL DEL CAMPUS VIRTUAL ================= */
+.panel-encabezado {
+  background: var(--negro);
+  color: var(--texto-invertido);
+  padding: 140px 0 40px;
+}
+
+.panel-encabezado .rol-insignia {
+  display: inline-block;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--linea-clara);
+  color: var(--rojo-vivo);
+  margin-top: 10px;
+}
+
+.panel-fila {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--linea);
+}
+.panel-fila:last-child { border-bottom: none; }
+
+.panel-fila-info { flex: 1; min-width: 0; }
+.panel-fila-info h4 { margin-bottom: 4px; }
+.panel-fila-info p { color: var(--texto-secundario); font-size: 14px; }
+.panel-fila-info .meta {
+  font-family: var(--f-mono);
+  font-size: 11.5px;
+  color: var(--texto-secundario);
+  margin-top: 6px;
+  display: block;
+}
+
+.panel-fila-acciones {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.panel-fila-acciones select {
+  border: 1.5px solid var(--linea);
+  border-radius: var(--radio);
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.boton-peligro {
+  background: none;
+  border: 1.5px solid var(--rojo-vivo);
+  color: var(--rojo-vivo);
+  border-radius: var(--radio);
+  padding: 8px 14px;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background var(--dur) var(--curva), color var(--dur) var(--curva);
+}
+.boton-peligro:hover { background: var(--rojo-vivo); color: var(--blanco); }
+
+.boton-secundario-chico {
+  background: none;
+  border: 1.5px solid var(--linea);
+  border-radius: var(--radio);
+  padding: 8px 14px;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+.boton-secundario-chico:hover { border-color: var(--negro); }
+
+.panel-mensaje {
+  font-size: 13.5px;
+  padding: 10px 14px;
+  border-radius: var(--radio);
+  margin-bottom: 16px;
+  display: none;
+}
+.panel-mensaje.ok { background: rgba(21,23,27,0.06); color: var(--texto); display: block; }
+.panel-mensaje.error { background: rgba(196,40,31,0.1); color: var(--rojo-vivo); display: block; }
+
+.panel-vacio {
+  color: var(--texto-secundario);
+  font-size: 14px;
+  padding: 24px 0;
 }

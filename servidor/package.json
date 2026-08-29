@@ -1,0 +1,33 @@
+{
+  "name": "glocap-center-servidor",
+  "version": "1.0.0",
+  "description": "API del Campus Virtual de GLOCAP CENTER",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js",
+    "prisma:generar": "dotenv -e .env -- prisma generate --schema=prisma/esquema.prisma",
+    "prisma:migrar": "dotenv -e .env -- prisma migrate dev --schema=prisma/esquema.prisma",
+    "prisma:deploy": "dotenv -e .env -- prisma migrate deploy --schema=prisma/esquema.prisma",
+    "prisma:estudio": "dotenv -e .env -- prisma studio --schema=prisma/esquema.prisma"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.1.0",
+    "@supabase/supabase-js": "^2.45.4",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.1",
+    "resend": "^4.0.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^7.4.4",
+    "prisma": "^6.1.0"
+  }
+}
