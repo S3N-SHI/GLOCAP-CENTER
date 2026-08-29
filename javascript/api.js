@@ -6,7 +6,7 @@
 // Mientras el backend corre en tu computadora, esto queda así.
 // Cuando lo despliegues (Render, por ejemplo), cambiá esta URL por
 // la real, algo como "https://glocap-servidor.onrender.com/api".
-   const API_BASE_URL = 'https://glocap-servidor.onrender.com/api';
+const API_BASE_URL = 'http://localhost:4000/api';
 
 function guardarSesion(token, usuario) {
   localStorage.setItem('glocap_token', token);
@@ -68,6 +68,10 @@ const ApiGlocap = {
   iniciarSesion: (correo, contrasena) =>
     llamarApi('/auth/iniciar-sesion', { metodo: 'POST', cuerpo: { correo, contrasena } }),
   perfil: () => llamarApi('/auth/perfil'),
+  olvideContrasena: (correo) =>
+    llamarApi('/auth/olvide-contrasena', { metodo: 'POST', cuerpo: { correo } }),
+  restablecerContrasena: (correo, codigo, contrasenaNueva) =>
+    llamarApi('/auth/restablecer-contrasena', { metodo: 'POST', cuerpo: { correo, codigo, contrasenaNueva } }),
 
   // --- Usuarios / roles (admin) ---
   listarUsuarios: () => llamarApi('/usuarios'),

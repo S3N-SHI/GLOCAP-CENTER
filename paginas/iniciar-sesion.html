@@ -42,6 +42,9 @@
           <input type="password" id="clave-login" name="clave" required>
         </div>
         <button type="submit" class="boton boton-primario">Iniciar sesión</button>
+        <p style="text-align:center; margin-top:14px;">
+          <a href="#" id="ir-a-olvide" style="font-size:13px;">¿Olvidaste tu contraseña?</a>
+        </p>
       </form>
 
       <!-- ============ VISTA: CREAR CUENTA ============ -->
@@ -73,6 +76,33 @@
         <button type="button" id="boton-reenviar-codigo" class="boton boton-fantasma" style="margin-top:10px;">Reenviar código</button>
       </form>
 
+      <!-- ============ VISTA: OLVIDÉ MI CONTRASEÑA ============ -->
+      <form id="form-olvide" aria-label="Formulario para pedir código de recuperación" style="display:none;">
+        <div class="campo">
+          <label for="correo-olvide">Correo electrónico</label>
+          <input type="email" id="correo-olvide" name="correo" required>
+        </div>
+        <button type="submit" class="boton boton-primario">Enviar código</button>
+        <p style="text-align:center; margin-top:14px;">
+          <a href="#" id="volver-a-login-desde-olvide" style="font-size:13px;">Volver a iniciar sesión</a>
+        </p>
+      </form>
+
+      <!-- ============ VISTA: RESTABLECER CONTRASEÑA ============ -->
+      <form id="form-restablecer" aria-label="Formulario para restablecer contraseña" style="display:none;">
+        <p class="subtexto">Te mandamos un código de 6 dígitos a <strong id="correo-a-restablecer"></strong>.</p>
+        <div class="campo" style="margin-top:16px;">
+          <label for="codigo-restablecer">Código</label>
+          <input type="text" id="codigo-restablecer" name="codigo" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required>
+        </div>
+        <div class="campo" style="margin-top:16px;">
+          <label for="clave-restablecer">Contraseña nueva</label>
+          <input type="password" id="clave-restablecer" name="clave" minlength="8" required>
+        </div>
+        <button type="submit" class="boton boton-primario">Cambiar contraseña</button>
+        <button type="button" id="boton-reenviar-reset" class="boton boton-fantasma" style="margin-top:10px;">Reenviar código</button>
+      </form>
+
       <div class="separador-login">Campus Virtual</div>
       <p class="subtexto" style="margin-bottom:0;" id="alternar-vista-contenedor">
         ¿Aún no tenés cuenta? <a href="#" id="alternar-vista">Creá una acá</a>.
@@ -88,6 +118,8 @@
     login: document.getElementById('form-login'),
     registro: document.getElementById('form-registro'),
     verificacion: document.getElementById('form-verificacion'),
+    olvide: document.getElementById('form-olvide'),
+    restablecer: document.getElementById('form-restablecer'),
   };
   const titulo = document.getElementById('titulo-tarjeta-login');
   const subtexto = document.getElementById('subtexto-tarjeta-login');
@@ -107,6 +139,14 @@
       titulo.textContent = 'Crear cuenta';
       subtexto.textContent = 'Registrate para acceder al Campus Virtual.';
       alternarContenedor.style.display = 'block';
+    } else if (nombre === 'olvide') {
+      titulo.textContent = 'Recuperar contraseña';
+      subtexto.textContent = 'Te mandamos un código para que elijas una nueva.';
+      alternarContenedor.style.display = 'none';
+    } else if (nombre === 'restablecer') {
+      titulo.textContent = 'Elegí tu nueva contraseña';
+      subtexto.textContent = '';
+      alternarContenedor.style.display = 'none';
     } else {
       titulo.textContent = 'Verificá tu correo';
       subtexto.textContent = '';
@@ -189,6 +229,57 @@
   document.getElementById('boton-reenviar-codigo').addEventListener('click', async () => {
     try {
       await ApiGlocap.reenviarCodigo(correoPendienteDeVerificar);
+      mostrarMensaje('Te mandamos un código nuevo.', 'ok');
+    } catch (error) {
+      mostrarMensaje(error.message, 'error');
+    }
+  });
+
+  // ============ OLVIDÉ MI CONTRASEÑA / RESTABLECER ============
+  let correoPendienteDeReset = '';
+
+  document.getElementById('ir-a-olvide').addEventListener('click', (evento) => {
+    evento.preventDefault();
+    mostrarVista('olvide');
+  });
+
+  document.getElementById('volver-a-login-desde-olvide').addEventListener('click', (evento) => {
+    evento.preventDefault();
+    mostrarVista('login');
+  });
+
+  vistas.olvide.addEventListener('submit', async (evento) => {
+    evento.preventDefault();
+    ocultarMensaje();
+    const correo = document.getElementById('correo-olvide').value.trim();
+    try {
+      await ApiGlocap.olvideContrasena(correo);
+      correoPendienteDeReset = correo;
+      document.getElementById('correo-a-restablecer').textContent = correo;
+      mostrarVista('restablecer');
+      mostrarMensaje('Si el correo existe, te llegó un código. Revisá spam también.', 'ok');
+    } catch (error) {
+      mostrarMensaje(error.message, 'error');
+    }
+  });
+
+  vistas.restablecer.addEventListener('submit', async (evento) => {
+    evento.preventDefault();
+    ocultarMensaje();
+    const codigo = document.getElementById('codigo-restablecer').value.trim();
+    const contrasenaNueva = document.getElementById('clave-restablecer').value;
+    try {
+      await ApiGlocap.restablecerContrasena(correoPendienteDeReset, codigo, contrasenaNueva);
+      mostrarVista('login');
+      mostrarMensaje('Contraseña actualizada. Iniciá sesión con la nueva.', 'ok');
+    } catch (error) {
+      mostrarMensaje(error.message, 'error');
+    }
+  });
+
+  document.getElementById('boton-reenviar-reset').addEventListener('click', async () => {
+    try {
+      await ApiGlocap.olvideContrasena(correoPendienteDeReset);
       mostrarMensaje('Te mandamos un código nuevo.', 'ok');
     } catch (error) {
       mostrarMensaje(error.message, 'error');

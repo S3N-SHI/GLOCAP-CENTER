@@ -1,0 +1,63 @@
+// Esquema de base de datos — GLOCAP CENTER
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Todo el mundo se registra como ESTUDIANTE. El rol ADMIN solo se
+// otorga: 1) automáticamente al primer correo que coincida con
+// ADMIN_EMAIL_INICIAL, o 2) manualmente, por un admin existente,
+// vía PATCH /api/usuarios/:id/rol.
+enum Rol {
+  ESTUDIANTE
+  ADMIN
+}
+
+model Usuario {
+  id                 String    @id @default(uuid())
+  nombre             String
+  correo             String    @unique
+  contrasenaHash     String    @map("contrasena_hash")
+  rol                Rol       @default(ESTUDIANTE)
+
+  correoVerificado   Boolean   @default(false) @map("correo_verificado")
+  codigoVerificacion String?   @map("codigo_verificacion")
+  codigoExpiraEn     DateTime? @map("codigo_expira_en")
+
+  // Recuperación de contraseña — campos separados de los de arriba
+  // a propósito, para que pedir un cambio de clave nunca interfiera
+  // con una verificación de correo que ya esté en curso.
+  codigoReset        String?   @map("codigo_reset")
+  codigoResetExpira  DateTime? @map("codigo_reset_expira")
+
+  creadoEn           DateTime  @default(now()) @map("creado_en")
+  actualizadoEn      DateTime  @updatedAt @map("actualizado_en")
+
+  noticiasCreadas    Noticia[] @relation("NoticiasDelAutor")
+
+  @@map("usuarios")
+}
+
+model Noticia {
+  id               String    @id @default(uuid())
+  titulo           String
+  contenido        String
+  imagenUrl        String?   @map("imagen_url")
+
+  // Null = sin fecha de caducidad (indefinida hasta que se borre).
+  // Nunca se expone en las rutas públicas — de uso exclusivo del admin.
+  fechaExpiracion  DateTime? @map("fecha_expiracion")
+
+  autorId          String    @map("autor_id")
+  autor            Usuario   @relation("NoticiasDelAutor", fields: [autorId], references: [id])
+
+  creadoEn         DateTime  @default(now()) @map("creado_en")
+  actualizadoEn    DateTime  @updatedAt @map("actualizado_en")
+
+  @@map("noticias")
+}
