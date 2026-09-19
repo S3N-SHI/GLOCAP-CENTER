@@ -36,6 +36,11 @@ model Usuario {
   codigoVerificacion String?   @map("codigo_verificacion")
   codigoExpiraEn     DateTime? @map("codigo_expira_en")
 
+  // Recuperación de contraseña---
+
+  codigoReset        String?   @map("codigo_reset")
+  codigoResetExpira  DateTime? @map("codigo_reset_expira")
+
   creadoEn           DateTime  @default(now()) @map("creado_en")
   actualizadoEn      DateTime  @updatedAt @map("actualizado_en")
 
