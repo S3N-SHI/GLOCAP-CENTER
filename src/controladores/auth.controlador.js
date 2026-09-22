@@ -7,8 +7,8 @@ import { enviarCodigoVerificacion, enviarCodigoRecuperacion } from '../servicios
 
 const esquemaRegistro = z.object({
   nombre: z.string().trim().min(2, 'El nombre es muy corto.'),
-  correo: z.string().trim().toLowerCase().email('Correo inválido.'),
-  contrasena: z.string().min(8, 'La contraseña debe tener al menos 8 caracteres.'),
+  correo: z.string().trim().toLowerCase().email('Correo invalido.'),
+  contrasena: z.string().min(8, 'La contrasena debe tener al menos 8 caracteres.'),
 });
 
 const esquemaVerificacion = z.object({
@@ -40,7 +40,7 @@ export async function registro(req, res) {
 
   const yaExiste = await prisma.usuario.findUnique({ where: { correo } });
   if (yaExiste) {
-    return res.status(409).json({ error: 'Ese correo ya está registrado.' });
+    return res.status(409).json({ error: 'Ese correo ya esta registrado.' });
   }
 
   const contrasenaHash = await bcrypt.hash(contrasena, 12);
@@ -59,11 +59,11 @@ export async function registro(req, res) {
   try {
     await enviarCodigoVerificacion(correo, nombre, codigo);
   } catch (error) {
-    console.error('No se pudo enviar el correo de verificación:', error);
+    console.error('No se pudo enviar el correo de verificacion:', error);
   }
 
   return res.status(201).json({
-    mensaje: 'Cuenta creada. Revisá tu correo para el código de verificación.',
+    mensaje: 'Cuenta creada. Revisa tu correo para el codigo de verificacion.',
     usuario: usuarioPublico(usuario),
   });
 }
@@ -80,13 +80,13 @@ export async function verificarCorreo(req, res) {
     return res.status(404).json({ error: 'No existe una cuenta con ese correo.' });
   }
   if (usuario.correoVerificado) {
-    return res.status(400).json({ error: 'Ese correo ya está verificado.' });
+    return res.status(400).json({ error: 'Ese correo ya esta verificado.' });
   }
   if (usuario.codigoVerificacion !== codigo) {
-    return res.status(400).json({ error: 'Código incorrecto.' });
+    return res.status(400).json({ error: 'Codigo incorrecto.' });
   }
   if (!usuario.codigoExpiraEn || usuario.codigoExpiraEn < new Date()) {
-    return res.status(400).json({ error: 'El código venció. Pedí uno nuevo.' });
+    return res.status(400).json({ error: 'El codigo vencio. Pedi uno nuevo.' });
   }
 
   const esAdminInicial =
@@ -118,16 +118,14 @@ const esquemaReenvio = z.object({
 export async function reenviarCodigo(req, res) {
   const datos = esquemaReenvio.safeParse(req.body);
   if (!datos.success) {
-    return res.status(400).json({ error: 'Correo inválido.' });
+    return res.status(400).json({ error: 'Correo invalido.' });
   }
   const { correo } = datos.data;
 
   const usuario = await prisma.usuario.findUnique({ where: { correo } });
-  // Mismo mensaje exista o no la cuenta, para no confirmarle a
-  // cualquiera qué correos están registrados.
   if (!usuario || usuario.correoVerificado) {
     return res.json({
-      mensaje: 'Si el correo existe y todavía no está verificado, te mandamos un código nuevo.',
+      mensaje: 'Si el correo existe y todavia no esta verificado, te mandamos un codigo nuevo.',
     });
   }
 
@@ -144,24 +142,24 @@ export async function reenviarCodigo(req, res) {
   try {
     await enviarCodigoVerificacion(correo, usuario.nombre, codigo);
   } catch (error) {
-    console.error('No se pudo reenviar el código de verificación:', error);
+    console.error('No se pudo reenviar el codigo de verificacion:', error);
   }
 
   return res.json({
-    mensaje: 'Si el correo existe y todavía no está verificado, te mandamos un código nuevo.',
+    mensaje: 'Si el correo existe y todavia no esta verificado, te mandamos un codigo nuevo.',
   });
 }
 
 export async function iniciarSesion(req, res) {
   const datos = esquemaLogin.safeParse(req.body);
   if (!datos.success) {
-    return res.status(400).json({ error: 'Correo o contraseña inválidos.' });
+    return res.status(400).json({ error: 'Correo o contrasena invalidos.' });
   }
   const { correo, contrasena } = datos.data;
 
   const usuario = await prisma.usuario.findUnique({ where: { correo } });
   const credencialesInvalidas = () =>
-    res.status(401).json({ error: 'Correo o contraseña incorrectos.' });
+    res.status(401).json({ error: 'Correo o contrasena incorrectos.' });
 
   if (!usuario) return credencialesInvalidas();
 
@@ -169,7 +167,7 @@ export async function iniciarSesion(req, res) {
   if (!coincide) return credencialesInvalidas();
 
   if (!usuario.correoVerificado) {
-    return res.status(403).json({ error: 'Verificá tu correo antes de iniciar sesión.' });
+    return res.status(403).json({ error: 'Verifica tu correo antes de iniciar sesion.' });
   }
 
   const token = generarToken(usuario);
@@ -182,7 +180,7 @@ export async function obtenerPerfil(req, res) {
   return res.json({ usuario: usuarioPublico(usuario) });
 }
 
-// ================= RECUPERACIÓN DE CONTRASEÑA =================
+// ================= RECUPERACION DE CONTRASENA =================
 
 const esquemaOlvideContrasena = z.object({
   correo: z.string().trim().toLowerCase().email(),
@@ -191,16 +189,14 @@ const esquemaOlvideContrasena = z.object({
 export async function olvideContrasena(req, res) {
   const datos = esquemaOlvideContrasena.safeParse(req.body);
   if (!datos.success) {
-    return res.status(400).json({ error: 'Correo inválido.' });
+    return res.status(400).json({ error: 'Correo invalido.' });
   }
   const { correo } = datos.data;
 
   const usuario = await prisma.usuario.findUnique({ where: { correo } });
 
-  // Mismo mensaje exista o no la cuenta — no le confirmamos a
-  // cualquiera qué correos están registrados en el sistema.
   const respuestaGenerica = {
-    mensaje: 'Si el correo existe, te mandamos un código para restablecer la contraseña.',
+    mensaje: 'Si el correo existe, te mandamos un codigo para restablecer la contrasena.',
   };
 
   if (!usuario) {
@@ -220,7 +216,7 @@ export async function olvideContrasena(req, res) {
   try {
     await enviarCodigoRecuperacion(correo, usuario.nombre, codigo);
   } catch (error) {
-    console.error('No se pudo enviar el correo de recuperación:', error);
+    console.error('No se pudo enviar el correo de recuperacion:', error);
   }
 
   return res.json(respuestaGenerica);
@@ -229,7 +225,7 @@ export async function olvideContrasena(req, res) {
 const esquemaRestablecer = z.object({
   correo: z.string().trim().toLowerCase().email(),
   codigo: z.string().length(6),
-  contrasenaNueva: z.string().min(8, 'La contraseña debe tener al menos 8 caracteres.'),
+  contrasenaNueva: z.string().min(8, 'La contrasena debe tener al menos 8 caracteres.'),
 });
 
 export async function restablecerContrasena(req, res) {
@@ -244,10 +240,10 @@ export async function restablecerContrasena(req, res) {
     return res.status(404).json({ error: 'No existe una cuenta con ese correo.' });
   }
   if (usuario.codigoReset !== codigo) {
-    return res.status(400).json({ error: 'Código incorrecto.' });
+    return res.status(400).json({ error: 'Codigo incorrecto.' });
   }
   if (!usuario.codigoResetExpira || usuario.codigoResetExpira < new Date()) {
-    return res.status(400).json({ error: 'El código venció. Pedí uno nuevo.' });
+    return res.status(400).json({ error: 'El codigo vencio. Pedi uno nuevo.' });
   }
 
   const contrasenaHash = await bcrypt.hash(contrasenaNueva, 12);
@@ -261,5 +257,5 @@ export async function restablecerContrasena(req, res) {
     },
   });
 
-  return res.json({ mensaje: 'Contraseña actualizada. Ya podés iniciar sesión con la nueva.' });
+  return res.json({ mensaje: 'Contrasena actualizada. Ya podes iniciar sesion con la nueva.' });
 }
