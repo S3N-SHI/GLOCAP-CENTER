@@ -163,10 +163,7 @@
   position: relative;
   background: var(--negro);
   color: var(--texto-invertido);
-
-  /* reduce espacio muerto superior e inferior */
   padding: 135px 0 70px;
-
   overflow: hidden;
 }
 
@@ -174,7 +171,6 @@
   content: "";
   position: absolute;
   inset: 0;
-
   background:
     radial-gradient(ellipse 900px 500px at 82% 12%,
       rgba(156, 27, 27, 0.35),
@@ -182,29 +178,19 @@
     linear-gradient(180deg,
       #15171B 0%,
       #1B1E24 100%);
-
   z-index: 0;
 }
 
-/* CONTENEDOR PRINCIPAL DEL HERO */
 .hero .contenedor {
   position: relative;
   z-index: 1;
-
   display: grid;
-
-  /* texto izquierda / imagen derecha */
   grid-template-columns: 1.05fr 0.95fr;
   grid-template-areas:
     "texto  visual"
     "cta    visual"
     "franja visual";
-
   gap: 0 56px;
-
-  /* IMPORTANTE:
-     evita que el texto se centre verticalmente
-     respecto a una imagen demasiado alta */
   align-items: start;
 }
 
@@ -225,7 +211,6 @@
   min-width: 0;
 }
 
-/* TÍTULO */
 .hero-titulo {
   font-size: clamp(38px, 5vw, 62px);
   color: var(--blanco);
@@ -236,35 +221,26 @@
   color: var(--rojo-vivo);
 }
 
-/* DESCRIPCIÓN */
 .hero-descripcion {
   margin-top: 22px;
   max-width: 46ch;
-
   font-size: 17px;
-
   color: rgba(244, 241, 236, 0.78);
 }
 
-/* BOTONES */
 .hero-cta {
   margin-top: 34px;
-
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
 }
 
-/* DATOS DE LA PARTE INFERIOR */
 .hero-franja {
   margin-top: 52px;
-
   display: flex;
   gap: 34px;
   flex-wrap: wrap;
-
   padding-top: 26px;
-
   border-top: 1px solid var(--linea-clara);
 }
 
@@ -276,57 +252,36 @@
 
 .hero-dato .rot {
   font-family: var(--f-mono);
-
   font-size: 11px;
   letter-spacing: 0.08em;
-
   text-transform: uppercase;
-
   color: rgba(244, 241, 236, 0.55);
 }
-
-/* ================= IMAGEN DEL HERO ================= */
 
 .hero-visual {
   position: relative;
 }
 
-/* línea de pulso roja */
 .hero-visual .linea-pulso {
   position: absolute;
-
   top: -18px;
   left: -10px;
   right: -10px;
-
   color: var(--rojo-vivo);
-
   opacity: 0.55;
-
   z-index: 2;
-
   pointer-events: none;
 }
 
-/* FOTO REAL */
 .hero-foto {
   width: 100%;
   min-width: 0;
-
-  /* Altura controlada (NO usar min-height acá: combinado con
-     aspect-ratio fue lo que causó el desborde horizontal en móvil
-     que arreglamos antes). aspect-ratio solo, sin min-height, no
-     genera ese problema porque el ancho ya es definido (100% de
-     la columna) y no hay una altura mínima que "transferir". */
   aspect-ratio: 4 / 5;
   object-fit: cover;
   max-height: 800px;
   object-position: center;
-
   display: block;
-
   border-radius: 6px;
-  
 }
 
 /* ================= FRANJA DE CONFIANZA ================= */
@@ -435,8 +390,8 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2px;
-  background: var(--linea);
-  border: 1px solid var(--linea);
+  background: var(--rojo-vivo);
+  border: 1px solid var(--rojo-vivo);
 }
 
 .tarjeta-valor {
@@ -774,6 +729,80 @@
   background: #000;
 }
 
+/* ================= REQUISITOS GENERALES (Certificaciones) =================
+   Sección "Antes de inscribirte": etiqueta + título + lista de requisitos
+   a la izquierda, fotografía de rescate a la derecha. Proporción ~55/45
+   en escritorio, se apila en tablet/móvil según espacio disponible. */
+
+.seccion-requisitos {
+  padding: 76px 0 100px;
+}
+
+.bloque-requisitos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 56px;
+}
+
+.bloque-requisitos > div:first-child {
+  flex: 1.15 1 380px;
+  min-width: 0;
+  max-width: 480px;
+}
+
+.bloque-requisitos .eyebrow {
+  margin-bottom: 8px;
+}
+
+.bloque-requisitos .titulo-seccion {
+  font-size: clamp(30px, 3.4vw, 42px);
+  max-width: 13ch;
+  margin-bottom: 6px;
+}
+
+.bloque-requisitos .lista-metodo {
+  margin-top: 30px;
+  gap: 24px;
+}
+
+.bloque-requisitos .paso-metodo .marcador {
+  width: 26px;
+  height: 26px;
+  min-width: 26px;
+}
+
+.bloque-requisitos .paso-metodo .ic {
+  width: 11px;
+  height: 11px;
+}
+
+.bloque-requisitos .paso-metodo h4 {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--negro);
+}
+
+.bloque-requisitos .paso-metodo p {
+  margin-top: 4px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--texto-secundario);
+}
+
+.imagen-requisitos {
+  flex: 1 1 340px;
+  min-width: 0;
+  width: 100%;
+  max-width: 600px;
+  aspect-ratio: 4 / 3.3;
+  object-fit: cover;
+  object-position: center 38%;
+  border-radius: 10px;
+  box-shadow: 0 24px 48px rgba(21, 17, 15, 0.16);
+  display: block;
+}
+
 /* ================= CONTACTO ================= */
 .bloque-contacto {
   display: grid;
@@ -881,7 +910,6 @@
   display: block;
 }
 
-
 .mapa-glocap {
   position: relative;
   overflow: hidden;
@@ -898,25 +926,16 @@
 /* Etiqueta sobre el mapa */
 .etiqueta-glocap {
   position: absolute;
-
-  /* Estos dos valores controlan dónde aparece */
   top: 45%;
   left: 50%;
-
   transform: translate(-50%, -50%);
-
   display: flex;
   align-items: center;
   gap: 8px;
-
   background: #ffffff;
   padding: 8px 12px;
-
   border-radius: 6px;
-
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.20);
-
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.20);
   pointer-events: none;
 }
 
@@ -924,36 +943,26 @@
 .punto-glocap {
   width: 12px;
   height: 12px;
-
   background: #e31b23;
-
   border: 3px solid #ffffff;
   border-radius: 50%;
-
-  box-shadow:
-    0 0 0 2px #e31b23;
-
+  box-shadow: 0 0 0 2px #e31b23;
   flex-shrink: 0;
 }
 
 .etiqueta-glocap strong {
   display: block;
-
   font-family: "Barlow Condensed", sans-serif;
   font-size: 16px;
-
   color: #111;
 }
 
 .etiqueta-glocap small {
   display: block;
-
   font-family: "Inter", sans-serif;
   font-size: 11px;
-
   color: #666;
 }
-
 
 /* ================= WHATSAPP FLOTANTE ================= */
 .whatsapp-flotante {

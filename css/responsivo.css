@@ -42,6 +42,28 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* ---- Sección de requisitos: pasa a vertical antes que el resto de
+   bloques de 2 columnas, porque su contenido (texto ancho fijo +
+   imagen ancha fija + gap de 56px) deja de caber cómodo desde 900px,
+   aunque la tablet "estándar" (860px) todavía no haya llegado. ---- */
+@media (max-width: 900px) {
+  .bloque-requisitos {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 36px;
+  }
+
+  .bloque-requisitos > div:first-child {
+    max-width: 100%;
+  }
+
+  .imagen-requisitos {
+    max-width: 100%;
+    aspect-ratio: 16 / 10;
+  }
+}
+
 /* ---- Tablet ---- */
 @media (max-width: 860px) {
   .nav-principal {
@@ -60,7 +82,6 @@
     transition: transform var(--dur) var(--curva);
     box-shadow: var(--sombra-fuerte);
   }
-
 
   .nav-principal.abierto {
     transform: translateX(0);
@@ -113,7 +134,6 @@
     padding-inline: 18px;
   }
 
- 
   .hero {
     padding: 112px 0 64px;
   }
@@ -180,6 +200,24 @@
     justify-content: center;
     margin-top: 4px;
   }
+
+  /* ---- Sección de requisitos en móvil ---- */
+  .seccion-requisitos {
+    padding: 56px 0 64px;
+  }
+
+  .imagen-requisitos {
+    aspect-ratio: 4 / 3;
+    margin-top: 4px;
+  }
+
+  .bloque-requisitos .titulo-seccion {
+    font-size: 26px;
+  }
+
+  .bloque-requisitos .lista-metodo {
+    gap: 20px;
+  }
 }
 
 /* ---- Móvil angosto ---- */
@@ -190,5 +228,14 @@
 
   .acciones-nav .boton {
     display: none;
+  }
+
+  /* ---- Sección de requisitos en pantallas muy angostas (~320px) ---- */
+  .bloque-requisitos .paso-metodo {
+    gap: 14px;
+  }
+
+  .bloque-requisitos .paso-metodo p {
+    font-size: 13px;
   }
 }
