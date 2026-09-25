@@ -43,15 +43,43 @@
   }
 }
 
+/* ---- Pantallas muy grandes (≥1600px): con --contenedor creciendo a
+   1400/1600px, los topes de 620/820px de .bloque-requisitos se quedan
+   cortos y vuelve el vacío blanco a la derecha. Los ampliamos aquí en
+   vez de subirlos en la regla base, para no ensanchar el texto de
+   lectura en pantallas normales. ---- */
+@media (min-width: 1600px) {
+  .bloque-requisitos > div:first-child {
+    max-width: 680px;
+  }
+
+  .imagen-requisitos {
+    max-width: 920px;
+  }
+}
+
+/* ---- Tablet ancha (1024px, justo el límite "desktop" del brief):
+   composición horizontal, pero el texto ya no tiene aire para 620px
+   de tope — lo relajamos un poco antes de pasar a vertical en 900px. ---- */
+@media (max-width: 1180px) {
+  .bloque-requisitos > div:first-child {
+    max-width: 460px;
+  }
+
+  .imagen-requisitos {
+    max-width: 560px;
+  }
+}
+
 /* ---- Sección de requisitos: pasa a vertical antes que el resto de
-   bloques de 2 columnas, porque su contenido (texto ancho fijo +
-   imagen ancha fija + gap de 56px) deja de caber cómodo desde 900px,
-   aunque la tablet "estándar" (860px) todavía no haya llegado. ---- */
+   bloques de 2 columnas, porque su contenido deja de caber cómodo
+   desde 900px, aunque la tablet "estándar" (860px) todavía no haya
+   llegado. ---- */
 @media (max-width: 900px) {
   .bloque-requisitos {
     flex-direction: column;
     align-items: stretch;
-    gap: 36px;
+    gap: 40px;
   }
 
   .bloque-requisitos > div:first-child {
@@ -61,6 +89,19 @@
   .imagen-requisitos {
     max-width: 100%;
     aspect-ratio: 16 / 10;
+    object-position: center 30%;
+  }
+}
+
+/* ---- Tablet en formato vertical (768–1023px aprox.): con una sola
+   columna, 3 requisitos apilados dejan la mitad derecha vacía. Los
+   distribuimos en 2 columnas para que el bloque use el ancho con
+   solidez antes de llegar a la fotografía. ---- */
+@media (max-width: 1023px) and (min-width: 561px) {
+  .bloque-requisitos .lista-metodo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px 32px;
   }
 }
 
@@ -117,6 +158,21 @@
   .bloque-contacto {
     grid-template-columns: 1fr;
     gap: 44px;
+  }
+
+  /* ---- Historia (Nosotros): imagen arriba como ancla visual ---- */
+  .historia-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .historia-visual {
+    order: -1;
+  }
+
+  /* ---- Misión / Visión: apiladas ---- */
+  .rejilla-mision-vision {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 
   .seccion {
@@ -209,14 +265,30 @@
   .imagen-requisitos {
     aspect-ratio: 4 / 3;
     margin-top: 4px;
+    object-position: center 32%;
   }
 
   .bloque-requisitos .titulo-seccion {
-    font-size: 26px;
+    font-size: 27px;
+    line-height: 1.15;
   }
 
   .bloque-requisitos .lista-metodo {
-    gap: 20px;
+    gap: 22px;
+  }
+
+  /* ---- Historia (Nosotros) en móvil ---- */
+  .historia-foto {
+    aspect-ratio: 16 / 10;
+  }
+
+  .historia-texto .titulo-seccion {
+    font-size: 28px;
+  }
+
+  /* ---- Descongestiona la esquina inferior derecha: solo WhatsApp visible ---- */
+  .volver-arriba {
+    display: none !important;
   }
 }
 
